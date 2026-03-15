@@ -1,0 +1,1 @@
+from shared.sql_client import preflight_pgvector

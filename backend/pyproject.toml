@@ -1,0 +1,28 @@
+[project]
+name = "firecrawl-docling-rag-backend"
+version = "0.1.0"
+description = "RAG system powered by Firecrawl and Docling"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "asyncpg>=0.31.0",
+    "fastapi>=0.128.0",
+    "greenlet>=3.3.0",
+    "langchain>=0.3.45",
+    "langchain-community>=0.3.0",
+    "langchain-postgres>=0.0.12",
+    "loguru>=0.7.3",
+    "psycopg2-binary>=2.9.11",
+    "python-dotenv>=1.2.1",
+    "sqlalchemy>=2.0.35",
+    "uvicorn>=0.30.0",
+    "langchain-google-genai>=4.2.0",
+    "google-genai>=1.0.0",
+    "langchain-core>=0.3.45",
+    "langgraph>=0.4.0",
+    "pillow>=10.0.0",
+    "firecrawl-py>=1.0.0",
+    "langchain-docling>=0.3.0",
+    "python-multipart>=0.0.9",
+    "pgvector>=0.3.0",
+]

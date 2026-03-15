@@ -1,0 +1,15 @@
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        - NEXT_PUBLIC_API_URL=http://localhost:8105
+    ports:
+      - "3001:3001"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8105
+
+networks:
+  default:
+    name: firecrawl_docling_network
+    external: true
