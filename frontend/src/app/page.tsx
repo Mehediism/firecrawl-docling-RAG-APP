@@ -176,13 +176,17 @@ export default function Home() {
                                                     <blockquote className="border-l-4 border-orange-300 pl-4 italic my-2" {...props} />
                                                 ),
                                                 table: ({ node, ...props }) => (
-                                                    <table className="border-collapse border border-gray-300 mb-2 w-full" {...props} />
+                                                    <div className="overflow-x-auto my-3 rounded-lg border border-gray-200">
+                                                        <table className="border-collapse w-full text-sm" {...props} />
+                                                    </div>
                                                 ),
-                                                thead: ({ node, ...props }) => <thead className="bg-gray-50" {...props} />,
+                                                thead: ({ node, ...props }) => <thead className="bg-gray-100" {...props} />,
+                                                tbody: ({ node, ...props }) => <tbody className="divide-y divide-gray-200" {...props} />,
+                                                tr: ({ node, ...props }) => <tr className="even:bg-gray-50" {...props} />,
                                                 th: ({ node, ...props }) => (
-                                                    <th className="border border-gray-300 px-3 py-2 text-left font-semibold" {...props} />
+                                                    <th className="px-3 py-2 text-left font-semibold border-b border-gray-300" {...props} />
                                                 ),
-                                                td: ({ node, ...props }) => <td className="border border-gray-300 px-3 py-2" {...props} />,
+                                                td: ({ node, ...props }) => <td className="px-3 py-2 align-top" {...props} />,
                                             }}
                                         >
                                             {msg.content}

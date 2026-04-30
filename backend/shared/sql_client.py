@@ -31,4 +31,19 @@ def preflight_pgvector():
         session.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
         session.commit()
     Base.metadata.create_all(engine)
-    
+
+    # BM25 / full-text search column + index. Idempotent.
+    # Uses 'simple' config (no language-specific stemming) so it works for
+    # English, Bangla, and mixed multilingual content uniformly.
+    with get_pg_session() as session:
+        session.execute(text("""
+            ALTER TABLE embeddings
+            ADD COLUMN IF NOT EXISTS content_tsv tsvector
+            GENERATED ALWAYS AS (to_tsvector('simple', coalesce(content, ''))) STORED
+        """))
+        session.execute(text("""
+            CREATE INDEX IF NOT EXISTS embeddings_content_tsv_idx
+            ON embeddings USING GIN (content_tsv)
+        """))
+        session.commit()
+        logger.info("Preflight: BM25 tsvector column + GIN index ready")

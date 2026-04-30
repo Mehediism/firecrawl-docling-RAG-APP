@@ -1,0 +1,133 @@
+{
+  "description": "Seed evaluation set for the Bangladesh Laws RAG. Each item has a query (in any of English / Bangla / Banglish), a list of URL substrings that the retriever should surface in its top-K (any one is a hit), and optional answer keywords the generator's final response should contain. Add 20-30 items hand-picked across acts, sections, languages, and difficulty levels.",
+  "items": [
+    {
+      "id": "wrpa-1992-board",
+      "query": "How is the management board formed under the Water Resources Planning Act, 1992?",
+      "language": "english",
+      "expected_url_substrings": ["act-761"],
+      "expected_answer_keywords": ["board", "council", "chairman", "1992"]
+    },
+    {
+      "id": "wrpa-1992-board-bn",
+      "query": "পানি সম্পদ পরিকল্পনা আইন, ১৯৯২ অনুযায়ী পরিচালনা বোর্ড কীভাবে গঠন করা হবে?",
+      "language": "bangla",
+      "expected_url_substrings": ["act-761"],
+      "expected_answer_keywords": ["১৯৯২", "পরিষদ", "চেয়ারম্যান"]
+    },
+    {
+      "id": "wrpa-1992-board-banglish",
+      "query": "pani sompod porikolpona ain 1992 onujayi board kivabe gothon hobe?",
+      "language": "banglish",
+      "expected_url_substrings": ["act-761"],
+      "expected_answer_keywords": ["১৯৯২", "পরিষদ"]
+    },
+    {
+      "id": "gonovote-1991-ballot",
+      "query": "gonovote law 1991 onujayi ballot box er bapare ki bola ache?",
+      "language": "banglish",
+      "expected_url_substrings": ["1991", "gonovote", "ballot", "act-7"],
+      "expected_answer_keywords": ["১৯৯১", "ব্যালট"]
+    },
+    {
+      "id": "army-act-1952-secondment",
+      "query": "What does the Army Act 1952 say about secondment to Navy or Air Force?",
+      "language": "english",
+      "expected_url_substrings": ["act-248", "section-7552"],
+      "expected_answer_keywords": ["secondment", "navy", "air force"]
+    },
+    {
+      "id": "rural-dev-board-1982",
+      "query": "Bangladesh Rural Development Board Ordinance 1982 er purpose ki?",
+      "language": "banglish",
+      "expected_url_substrings": ["1982", "rural"],
+      "expected_answer_keywords": ["rural", "development", "1982"]
+    },
+    {
+      "id": "irrigation-water-rate-1983",
+      "query": "Irrigation Water Rate Ordinance 1983 in what year came into effect?",
+      "language": "english",
+      "expected_url_substrings": ["act-644"],
+      "expected_answer_keywords": ["1983", "irrigation"]
+    },
+    {
+      "id": "atomic-energy-2012",
+      "query": "বাংলাদেশ পরমাণু শক্তি নিয়ন্ত্রণ আইন কত সালে প্রণীত হয়েছে?",
+      "language": "bangla",
+      "expected_url_substrings": ["act-1096"],
+      "expected_answer_keywords": ["২০১২", "পরমাণু"]
+    },
+    {
+      "id": "water-supply-sewerage-1996",
+      "query": "পানি সরবরাহ ও পয়ঃনিষ্কাশন কর্তৃপক্ষ আইন কোন সালের আইন?",
+      "language": "bangla",
+      "expected_url_substrings": ["act-804"],
+      "expected_answer_keywords": ["১৯৯৬"]
+    },
+    {
+      "id": "bd-water-act-2013",
+      "query": "Bangladesh Water Act 2013 er provisions ki ki?",
+      "language": "banglish",
+      "expected_url_substrings": ["act-1114"],
+      "expected_answer_keywords": ["২০১৩", "পানি"]
+    },
+    {
+      "id": "chittagong-corporation-1982",
+      "query": "What is the Chittagong City Corporation Ordinance, 1982?",
+      "language": "english",
+      "expected_url_substrings": ["act-633"],
+      "expected_answer_keywords": ["chittagong", "corporation", "1982"]
+    },
+    {
+      "id": "national-local-govt-1992",
+      "query": "জাতীয় স্থানীয় সরকার ইনস্টিটিউট আইন কত সালে প্রণীত হয়?",
+      "language": "bangla",
+      "expected_url_substrings": ["act-767"],
+      "expected_answer_keywords": ["১৯৯২"]
+    },
+    {
+      "id": "aerial-ropeways-1923",
+      "query": "Aerial Ropeways Act 1923 er section 39 te ki bola ache?",
+      "language": "banglish",
+      "expected_url_substrings": ["act-130", "section-6819"],
+      "expected_answer_keywords": ["limitation", "claims", "damage"]
+    },
+    {
+      "id": "administrator-general-1913",
+      "query": "Administrator General's Act 1913 section 46 - power of auditors",
+      "language": "english",
+      "expected_url_substrings": ["act-99", "section-24971"],
+      "expected_answer_keywords": ["auditors", "summon", "witnesses"]
+    },
+    {
+      "id": "air-force-act-1953",
+      "query": "Air Force Act 1953 section 95 ki bole?",
+      "language": "banglish",
+      "expected_url_substrings": ["act-256", "section-9904"],
+      "expected_answer_keywords": ["deduction", "public money"]
+    },
+    {
+      "id": "out-of-domain-control",
+      "query": "What is the recipe for biriyani?",
+      "language": "english",
+      "expected_url_substrings": [],
+      "expected_answer_keywords": ["not", "knowledge base"],
+      "should_refuse": true
+    },
+    {
+      "id": "out-of-domain-bn",
+      "query": "ঢাকার সবচেয়ে ভালো রেস্টুরেন্ট কোনটি?",
+      "language": "bangla",
+      "expected_url_substrings": [],
+      "expected_answer_keywords": ["খুঁজে পাইনি", "তথ্য নেই", "knowledge"],
+      "should_refuse": true
+    },
+    {
+      "id": "homepage-control",
+      "query": "What is the Laws of Bangladesh website?",
+      "language": "english",
+      "expected_url_substrings": ["bdlaws.minlaw.gov.bd"],
+      "expected_answer_keywords": ["bangladesh", "laws"]
+    }
+  ]
+}
