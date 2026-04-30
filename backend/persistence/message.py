@@ -21,7 +21,7 @@ class Message(BaseModel):
             self.text = self.text.strip()
             if not self.text:
                 raise ValueError("message is empty")
-            if len(self.text) > 500:
+            if len(self.text) > 10000:
                 raise ValueError("message is too long")
 
         if self.image_b64:
