@@ -18,6 +18,8 @@ export default function SourcesPage() {
     const [expandedSourceId, setExpandedSourceId] = useState<number | null>(null);
     const [sourcePages, setSourcePages] = useState<{ [key: number]: Page[] }>({});
     const [loadingPages, setLoadingPages] = useState<number | null>(null);
+    const [pagePagination, setPagePagination] = useState<{ [key: number]: { skip: number; total: number } }>({});
+    const PAGE_LIMIT = 50;
 
     // State for content modal
     const [selectedPage, setSelectedPage] = useState<PageDetail | null>(null);
@@ -99,6 +101,19 @@ export default function SourcesPage() {
         }
     };
 
+    const fetchPages = async (sourceId: number, skip: number) => {
+        setLoadingPages(sourceId);
+        try {
+            const data = await getSourcePages(sourceId, skip, PAGE_LIMIT);
+            setSourcePages((prev) => ({ ...prev, [sourceId]: data.items }));
+            setPagePagination((prev) => ({ ...prev, [sourceId]: { skip, total: data.total } }));
+        } catch (error) {
+            logger.error("Failed to fetch pages", error);
+        } finally {
+            setLoadingPages(null);
+        }
+    };
+
     const handleToggleExpand = async (sourceId: number) => {
         if (expandedSourceId === sourceId) {
             setExpandedSourceId(null);
@@ -107,17 +122,8 @@ export default function SourcesPage() {
 
         setExpandedSourceId(sourceId);
 
-        // Fetch pages if not already loaded
         if (!sourcePages[sourceId]) {
-            setLoadingPages(sourceId);
-            try {
-                const data = await getSourcePages(sourceId);
-                setSourcePages((prev) => ({ ...prev, [sourceId]: data.items }));
-            } catch (error) {
-                logger.error("Failed to fetch pages", error);
-            } finally {
-                setLoadingPages(null);
-            }
+            await fetchPages(sourceId, 0);
         }
     };
 
@@ -323,31 +329,57 @@ export default function SourcesPage() {
                                             {loadingPages === source.id ? (
                                                 <div className="p-4 text-center text-gray-500">Loading pages...</div>
                                             ) : sourcePages[source.id]?.length > 0 ? (
-                                                <ul className="divide-y divide-gray-100">
-                                                    {sourcePages[source.id].map((page) => (
-                                                        <li
-                                                            key={page.id}
-                                                            className="p-3 pl-12 hover:bg-orange-50 cursor-pointer flex items-center gap-3 transition-colors"
-                                                            onClick={() => handleViewContent(page.id)}
-                                                        >
-                                                            <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                            </svg>
-                                                            <div className="flex-1 min-w-0">
-                                                                <p className="text-sm font-medium text-gray-800 truncate">
-                                                                    {page.page_title || page.page_url}
-                                                                </p>
-                                                                <p className="text-xs text-gray-500 truncate">{page.page_url}</p>
-                                                            </div>
-                                                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(page.status)}`}>
-                                                                {page.status}
+                                                <>
+                                                    <ul className="divide-y divide-gray-100">
+                                                        {sourcePages[source.id].map((page) => (
+                                                            <li
+                                                                key={page.id}
+                                                                className="p-3 pl-12 hover:bg-orange-50 cursor-pointer flex items-center gap-3 transition-colors"
+                                                                onClick={() => handleViewContent(page.id)}
+                                                            >
+                                                                <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                                </svg>
+                                                                <div className="flex-1 min-w-0">
+                                                                    <p className="text-sm font-medium text-gray-800 truncate">
+                                                                        {page.page_title || page.page_url}
+                                                                    </p>
+                                                                    <p className="text-xs text-gray-500 truncate">{page.page_url}</p>
+                                                                </div>
+                                                                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(page.status)}`}>
+                                                                    {page.status}
+                                                                </span>
+                                                                <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                                </svg>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                    {/* Pagination Controls */}
+                                                    {pagePagination[source.id] && pagePagination[source.id].total > PAGE_LIMIT && (
+                                                        <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100 bg-gray-50">
+                                                            <span className="text-xs text-gray-500">
+                                                                Showing {pagePagination[source.id].skip + 1}–{Math.min(pagePagination[source.id].skip + PAGE_LIMIT, pagePagination[source.id].total)} of {pagePagination[source.id].total} pages
                                                             </span>
-                                                            <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                                            </svg>
-                                                        </li>
-                                                    ))}
-                                                </ul>
+                                                            <div className="flex gap-2">
+                                                                <button
+                                                                    disabled={pagePagination[source.id].skip === 0}
+                                                                    onClick={() => fetchPages(source.id, pagePagination[source.id].skip - PAGE_LIMIT)}
+                                                                    className="px-3 py-1 text-xs rounded border border-gray-300 disabled:opacity-40 hover:bg-white transition-colors"
+                                                                >
+                                                                    Previous
+                                                                </button>
+                                                                <button
+                                                                    disabled={pagePagination[source.id].skip + PAGE_LIMIT >= pagePagination[source.id].total}
+                                                                    onClick={() => fetchPages(source.id, pagePagination[source.id].skip + PAGE_LIMIT)}
+                                                                    className="px-3 py-1 text-xs rounded border border-gray-300 disabled:opacity-40 hover:bg-white transition-colors"
+                                                                >
+                                                                    Next
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </>
                                             ) : (
                                                 <div className="p-4 text-center text-gray-500">No pages found.</div>
                                             )}

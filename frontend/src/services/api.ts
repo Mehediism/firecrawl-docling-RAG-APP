@@ -95,8 +95,8 @@ export const getSources = async (skip: number = 0, limit: number = 10): Promise<
     return response.json();
 };
 
-export const getSourcePages = async (sourceId: number): Promise<PageListResponse> => {
-    const response = await fetch(`${API_BASE_URL}/ingestion/${sourceId}/pages`);
+export const getSourcePages = async (sourceId: number, skip: number = 0, limit: number = 50): Promise<PageListResponse> => {
+    const response = await fetch(`${API_BASE_URL}/ingestion/${sourceId}/pages?skip=${skip}&limit=${limit}`);
 
     if (!response.ok) {
         throw new Error("Failed to fetch pages");

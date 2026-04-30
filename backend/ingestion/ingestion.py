@@ -48,7 +48,7 @@ def ingest_url_task(source_id: int):
             firecrawl_api_key = os.getenv("FIRECRAWL_API_KEY")
             firecrawl_api_url = os.getenv("FIRECRAWL_API_URL")
             
-            CRAWL_PAGE_LIMIT = 10
+            CRAWL_PAGE_LIMIT = 2000
             
             if firecrawl_api_url:
                 logger.info(f"Using LOCAL self-hosted Firecrawl at: {firecrawl_api_url} (limit: {CRAWL_PAGE_LIMIT} pages)")

@@ -4,6 +4,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from pgvector.sqlalchemy import Vector
 from shared.sql_client import Base
+from shared.config import EMBEDDING_DIMENSIONS
 
 
 class Source(Base):
@@ -46,7 +47,7 @@ class Embedding(Base):
     page_id = Column(Integer, ForeignKey("pages.id", ondelete="CASCADE"), nullable=True, index=True)
     
     content = Column(Text)
-    embedding = Column(Vector(768))
+    embedding = Column(Vector(EMBEDDING_DIMENSIONS))
     chunk_index = Column(Integer, default=0)
     meta_data = Column(JSONB, nullable=True)
     
