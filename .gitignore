@@ -20,3 +20,7 @@ Thumbs.db
 .vscode/
 .idea/
 (gitignore)
+
+# DB exports — too large for GitHub (195 MB+), may contain crawled content
+*.dump.gz
+*.dump
